@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ДЗ для Фёдора</title>
+<style>
+:root{
+  --turq:#159A96; --turq-dark:#0C6E6B; --turq-light:#E4F6F5;
+  --wheat:#B5722E; --wheat-light:#F3E3D2;
+  --ok:#2E9E4A; --err:#D9534F;
+  box-sizing:border-box;
+}
+*{box-sizing:inherit;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:'Georgia',serif;
+  background:linear-gradient(180deg,var(--turq-light),#fff 400px);
+  color:#20393A;
+  padding: env(safe-area-inset-top,0px) 16px calc(env(safe-area-inset-bottom,0px) + 24px);
+  line-height:1.5;
+}
+.wrap{max-width:760px;margin:0 auto;}
+h1{color:var(--turq-dark);font-size:1.7em;text-align:center;margin:24px 0 4px;}
+.hero{
+  background:var(--turq);color:#fff;border-radius:14px;padding:18px 20px;
+  margin:16px 0 28px; text-align:center; font-size:1.15em; font-weight:bold;
+  box-shadow:0 4px 14px rgba(21,154,150,.3);
+}
+.intro{
+  background:var(--wheat-light); border-left:5px solid var(--wheat);
+  padding:12px 16px; border-radius:8px; margin:22px 0 14px; font-size:1.05em;
+}
+h2{color:var(--wheat);border-bottom:2px solid var(--wheat);padding-bottom:6px;margin-top:40px;}
+.card{
+  background:#fff;border:1px solid #cfeceb;border-radius:12px;
+  padding:16px 18px;margin:14px 0;box-shadow:0 2px 6px rgba(0,0,0,.05);
+  transition:background .3s,border-color .3s;
+}
+.card.ok{background:#EAF9EE;border-color:var(--ok);}
+.card.err{background:#FCEBEA;border-color:var(--err);}
+.q{font-size:1.08em;margin-bottom:10px;}
+input[type=text]{
+  padding:8px 10px;border:1.5px solid var(--turq);border-radius:8px;
+  font-size:1em;width:120px;font-family:inherit;
+}
+button{
+  background:var(--turq);color:#fff;border:none;border-radius:8px;
+  padding:8px 16px;font-size:.95em;cursor:pointer;margin-left:8px;
+  font-family:inherit;
+}
+button:hover{background:var(--turq-dark);}
+.opts label{
+  display:block;background:var(--turq-light);border:1.5px solid #cfeceb;
+  border-radius:8px;padding:8px 12px;margin:6px 0;cursor:pointer;
+}
+.opts label:hover{border-color:var(--turq);}
+.result{margin-top:8px;font-weight:bold;min-height:1.2em;}
+.result.ok{color:var(--ok);}
+.result.err{color:var(--err);}
+svg{display:block;margin:10px auto;max-width:100%;}
+footer{text-align:center;color:#5a7a7a;margin-top:40px;font-size:.9em;}
+.tabs{display:flex;gap:8px;margin-bottom:6px}
+.tab{flex:1;margin:0;background:#fff;color:var(--turq-dark);border:2px solid var(--turq);padding:10px;border-radius:10px;font-weight:bold;font-size:1em}
+.tab.on{background:var(--turq);color:#fff}
+input.s{width:64px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Домашнее задание</h1>
+<div class="hero">Фёдор, отнесись серьёзно к ДЗ 🙂</div>
+
+<div class="tabs"><button class="tab" id="tb1" onclick="showTab(1)">дз на 03.10</button><button class="tab on" id="tb2" onclick="showTab(2)">дз на 10.10</button></div>
+<div id="tab1" class="pane" style="display:none">
+<!-- ================= АЛГЕБРА ================= -->
+<div class="intro">Сначала повторим то, что делали на занятии — примеры с корнем и модулем.</div>
+<h2>Алгебра. Квадратный корень и модуль</h2>
+
+<div class="card" id="a1">
+  <div class="q">1) Вычислите: √(−6,32)²</div>
+  <input type="text" id="a1_in" placeholder="ответ">
+  <button onclick="checkNum('a1',6.32)">Проверить</button>
+  <div class="result" id="a1_res"></div>
+</div>
+
+<div class="card" id="a2">
+  <div class="q">2) Вычислите: −3·√(3,6)²</div>
+  <input type="text" id="a2_in" placeholder="ответ">
+  <button onclick="checkNum('a2',-10.8)">Проверить</button>
+  <div class="result" id="a2_res"></div>
+</div>
+
+<div class="card" id="a3">
+  <div class="q">3) Вычислите: 28 : √(−7)²</div>
+  <input type="text" id="a3_in" placeholder="ответ">
+  <button onclick="checkNum('a3',4)">Проверить</button>
+  <div class="result" id="a3_res"></div>
+</div>
+
+<div class="card" id="a4">
+  <div class="q">4) Упростите: √n², если n &lt; 0</div>
+  <div class="opts">
+    <label><input type="radio" name="a4" value="n"> n</label>
+    <label><input type="radio" name="a4" value="-n"> −n</label>
+    <label><input type="radio" name="a4" value="n2"> n²</label>
+    <label><input type="radio" name="a4" value="absn+n"> |n| + n</label>
+  </div>
+  <button onclick="checkChoice('a4','-n')">Проверить</button>
+  <div class="result" id="a4_res"></div>
+</div>
+
+<div class="card" id="a5">
+  <div class="q">5) Упростите: √(9a² + 6a + 1), если a &lt; −1/3</div>
+  <div class="opts">
+    <label><input type="radio" name="a5" value="3a1"> 3a + 1</label>
+    <label><input type="radio" name="a5" value="-3a1"> −(3a + 1)</label>
+    <label><input type="radio" name="a5" value="-3a-1v2"> −3a + 1</label>
+    <label><input type="radio" name="a5" value="3a-1"> 3a − 1</label>
+  </div>
+  <button onclick="checkChoice('a5','-3a1')">Проверить</button>
+  <div class="result" id="a5_res"></div>
+</div>
+
+<div class="card" id="a6">
+  <div class="q">6) Вычислите: √(−8,15)²</div>
+  <input type="text" id="a6_in" placeholder="ответ">
+  <button onclick="checkNum('a6',8.15)">Проверить</button>
+  <div class="result" id="a6_res"></div>
+</div>
+
+<div class="card" id="a7">
+  <div class="q">7) Вычислите: −4·√(1,8)²</div>
+  <input type="text" id="a7_in" placeholder="ответ">
+  <button onclick="checkNum('a7',-7.2)">Проверить</button>
+  <div class="result" id="a7_res"></div>
+</div>
+
+<div class="card" id="a8">
+  <div class="q">8) Вычислите: 36 : √(−6)²</div>
+  <input type="text" id="a8_in" placeholder="ответ">
+  <button onclick="checkNum('a8',6)">Проверить</button>
+  <div class="result" id="a8_res"></div>
+</div>
+
+<!-- ================= ГЕОМЕТРИЯ: ПРЯМОУГОЛЬНИК ================= -->
+<div class="intro">Фёдор, давай выучим теорию про прямоугольник!</div>
+<h2>Геометрия. Прямоугольник</h2>
+
+<div class="card" id="g1">
+  <div class="q">1) Прямоугольником называется параллелограмм, у которого…</div>
+  <div class="opts">
+    <label><input type="radio" name="g1" value="A"> все стороны равны</label>
+    <label><input type="radio" name="g1" value="B"> все углы прямые</label>
+    <label><input type="radio" name="g1" value="C"> диагонали перпендикулярны</label>
+    <label><input type="radio" name="g1" value="D"> один угол тупой</label>
+  </div>
+  <button onclick="checkChoice('g1','B')">Проверить</button>
+  <div class="result" id="g1_res"></div>
+</div>
+
+<div class="card" id="g2">
+  <div class="q">2) Если ABCD — прямоугольник и AO + BO + CO = 21 см (O — точка пересечения диагоналей), то BD = ?</div>
+  <input type="text" id="g2_in" placeholder="см">
+  <button onclick="checkNum('g2',14)">Проверить</button>
+  <div class="result" id="g2_res"></div>
+</div>
+
+<div class="card" id="g3">
+  <div class="q">3) Если у параллелограмма ABCD диагонали равны (AC = BD), то это…</div>
+  <div class="opts">
+    <label><input type="radio" name="g3" value="A"> ромб</label>
+    <label><input type="radio" name="g3" value="B"> прямоугольник</label>
+    <label><input type="radio" name="g3" value="C"> трапеция</label>
+    <label><input type="radio" name="g3" value="D"> квадрат (обязательно)</label>
+  </div>
+  <button onclick="checkChoice('g3','B')">Проверить</button>
+  <div class="result" id="g3_res"></div>
+</div>
+
+<div class="card" id="g4">
+  <div class="q">4) Диагонали прямоугольника…</div>
+  <div class="opts">
+    <label><input type="radio" name="g4" value="A"> равны и точкой пересечения делятся пополам</label>
+    <label><input type="radio" name="g4" value="B"> перпендикулярны друг другу</label>
+    <label><input type="radio" name="g4" value="C"> являются биссектрисами углов</label>
+    <label><input type="radio" name="g4" value="D"> не пересекаются</label>
+  </div>
+  <button onclick="checkChoice('g4','A')">Проверить</button>
+  <div class="result" id="g4_res"></div>
+</div>
+
+<div class="card" id="g5">
+  <div class="q">5) Верно ли утверждение: «Если у четырёхугольника диагонали равны, то это прямоугольник»?</div>
+  <div class="opts">
+    <label><input type="radio" name="g5" value="A"> Да</label>
+    <label><input type="radio" name="g5" value="B"> Нет</label>
+  </div>
+  <button onclick="checkChoice('g5','B')">Проверить</button>
+  <div class="result" id="g5_res"></div>
+</div>
+
+<!-- ================= ПАРАЛЛЕЛЬНЫЕ ПРЯМЫЕ ================= -->
+<div class="intro">Параллельные прямые и секущая будут встречаться во многих геометрических задачах, поэтому с этими углами очень важно разобраться. Фёдор, будь внимательнее и запоминай!</div>
+<h2>Параллельные прямые и секущая</h2>
+
+<svg viewBox="0 0 400 260" width="360">
+  <line x1="20" y1="80" x2="380" y2="80" stroke="#159A96" stroke-width="3"/>
+  <line x1="20" y1="180" x2="380" y2="180" stroke="#159A96" stroke-width="3"/>
+  <text x="385" y="84" font-size="14" fill="#159A96">a</text>
+  <text x="385" y="184" font-size="14" fill="#159A96">b</text>
+  <line x1="70" y1="10" x2="330" y2="250" stroke="#B5722E" stroke-width="3"/>
+  <text x="335" y="252" font-size="14" fill="#B5722E">c</text>
+  <text x="112" y="65" font-size="15" font-weight="bold">1</text>
+  <text x="152" y="48" font-size="15" font-weight="bold">2</text>
+  <text x="170" y="97" font-size="15" font-weight="bold">3</text>
+  <text x="128" y="115" font-size="15" font-weight="bold">4</text>
+  <text x="220" y="165" font-size="15" font-weight="bold">5</text>
+  <text x="260" y="148" font-size="15" font-weight="bold">6</text>
+  <text x="278" y="197" font-size="15" font-weight="bold">7</text>
+  <text x="236" y="215" font-size="15" font-weight="bold">8</text>
+</svg>
+
+<div class="card" id="p1">
+  <div class="q">1) Углы 4 и 6 (по разные стороны секущей, между прямыми a и b) называются накрест лежащими. Чему они равны между собой?</div>
+  <div class="opts">
+    <label><input type="radio" name="p1" value="A"> равны</label>
+    <label><input type="radio" name="p1" value="B"> в сумме дают 180°</label>
+  </div>
+  <button onclick="checkChoice('p1','A')">Проверить</button>
+  <div class="result" id="p1_res"></div>
+</div>
+
+<div class="card" id="p2">
+  <div class="q">2) Углы 1 и 5 расположены с одной стороны секущей на одной высоте — это соответственные углы. Они…</div>
+  <div class="opts">
+    <label><input type="radio" name="p2" value="A"> равны</label>
+    <label><input type="radio" name="p2" value="B"> в сумме дают 180°</label>
+  </div>
+  <button onclick="checkChoice('p2','A')">Проверить</button>
+  <div class="result" id="p2_res"></div>
+</div>
+
+<div class="card" id="p3">
+  <div class="q">3) Углы 4 и 5 лежат по одну сторону секущей между прямыми a и b — это односторонние углы. Они…</div>
+  <div class="opts">
+    <label><input type="radio" name="p3" value="A"> равны</label>
+    <label><input type="radio" name="p3" value="B"> в сумме дают 180°</label>
+  </div>
+  <button onclick="checkChoice('p3','B')">Проверить</button>
+  <div class="result" id="p3_res"></div>
+</div>
+
+<div class="card" id="p4">
+  <div class="q">4) На рисунке угол 4 = 120°. Чему равен угол 6 (накрест лежащий к нему)?</div>
+  <input type="text" id="p4_in" placeholder="°">
+  <button onclick="checkNum('p4',120)">Проверить</button>
+  <div class="result" id="p4_res"></div>
+</div>
+
+<div class="card" id="p5">
+  <div class="q">5) На рисунке угол 3 = 70°. Угол 6 — односторонний к нему (в сумме 180°). Чему равен угол 6?</div>
+  <input type="text" id="p5_in" placeholder="°">
+  <button onclick="checkNum('p5',110)">Проверить</button>
+  <div class="result" id="p5_res"></div>
+</div>
+
+</div>
+<div id="tab2" class="pane">
+<div class="intro">Фёдор, это ДЗ по теме, которую мы разбирали на занятии: вынесение множителя за знак корня и внесение под знак корня. Сначала вспомни, как это работает.</div>
+<div class="card">
+<b>Вынести множитель за знак корня:</b><br>
+√18 = √(9·2) = √9·√2 = 3√2; &nbsp; √125 = √(25·5) = 5√5; &nbsp; √(5a²) = √5·|a|<br><br>
+<b>Внести множитель под знак корня:</b><br>
+2√3 = √(2²·3) = √12; &nbsp; −7√2 = −√(49·2) = −√98 (минус остаётся перед корнем!)<br><br>
+<b>Квадраты, которые пригодятся:</b> 1, 4, 9, 16, 25, 36, 49, 64, 81, 100
+</div>
+<div id="t2box"></div>
+</div>
+<footer>Удачи, Фёдор! 💪</footer>
+</div>
+
+<script>
+function setState(id, isOk, msg){
+  const card = document.getElementById(id);
+  const res = document.getElementById(id+'_res');
+  card.classList.remove('ok','err');
+  res.classList.remove('ok','err');
+  card.classList.add(isOk?'ok':'err');
+  res.classList.add(isOk?'ok':'err');
+  res.textContent = isOk ? '✓ Верно!' : '✗ Неверно, попробуй ещё раз.';
+}
+function checkNum(id, correct, tol){
+  tol = tol || 0.05;
+  const raw = document.getElementById(id+'_in').value.trim().replace(',', '.');
+  const val = parseFloat(raw);
+  const ok = !isNaN(val) && Math.abs(val-correct) < tol;
+  setState(id, ok);
+}
+function checkChoice(name, correct){
+  const radios = document.getElementsByName(name);
+  let chosen = null;
+  for (const r of radios){ if (r.checked) chosen = r.value; }
+  if (chosen === null){ return; }
+  setState(name, chosen === correct);
+}
+
+function showTab(n){
+  for(const i of [1,2]){
+    document.getElementById('tab'+i).style.display=(i===n)?'block':'none';
+    document.getElementById('tb'+i).classList.toggle('on',i===n);
+  }
+}
+function checkPair(id,a,b){
+  const g=k=>parseFloat(document.getElementById(id+'_'+k).value.trim().replace(',','.'));
+  setState(id, g('a')===a && g('b')===b);
+}
+const T2=[
+ {h:'1. Вынесите множитель за знак корня',t:'Запиши ответ в виде a√b: впиши числа в оба окошка. Ищи под корнем наибольший полный квадрат из таблицы.',
+  i:[{k:'pair',q:'√48 =',a:[4,3]},{k:'pair',q:'√75 =',a:[5,3]},{k:'pair',q:'√180 =',a:[6,5]},{k:'pair',q:'√288 =',a:[12,2]}]},
+ {h:'2. Внесите множитель под знак корня',t:'Теперь наоборот: впиши число, которое окажется под корнем.',
+  i:[{k:'num',q:'3√5 = √',a:45},{k:'num',q:'−4√3 = −√',a:48},{k:'num',q:'6√2 = √',a:72},{k:'num',q:'0,5√12 = √',a:3}]},
+ {h:'3. Корень, буквы и модуль',t:'Будь внимательнее: √a² = |a|, а знак зависит от условия.',
+  i:[{k:'mc',q:'√(3a²) при любом a равен…',o:['a√3','|a|√3','3|a|','a²√3'],c:1},
+     {k:'mc',q:'√(5b²), если b &lt; 0, равен…',o:['b√5','5b','−b√5','−5b'],c:2},
+     {k:'mc',q:'√(2a²b⁴), если a &lt; 0, равен…',o:['ab²√2','−ab²√2','a²b√2','−ab⁴√2'],c:1},
+     {k:'mc',q:'Внесите множитель под знак корня: m√7, если m &lt; 0',o:['√(7m²)','√(7m)','−√(7m)','−√(7m²)'],c:3}]},
+ {h:'4. Преобразование выражений',t:'Как в примерах 1 и 2 из учебника: вынеси множители и упрости.',
+  i:[{k:'pair',q:'√8 + √32 − √18 =',a:[3,2]},{k:'num',q:'Вычислите: √((−5)(−10)) / √(8·25) =',a:0.5}]}
+];
+(function(){
+  let h='';
+  T2.forEach((sec,si)=>{
+    h+='<div class="intro">'+sec.t+'</div><h2>'+sec.h+'</h2>';
+    sec.i.forEach((it,ii)=>{
+      const id='n'+si+'_'+ii, n=(ii+1)+') ';
+      h+='<div class="card" id="'+id+'"><div class="q">'+n+it.q;
+      if(it.k==='pair'){
+        h+=' <input type="text" class="s" id="'+id+'_a"> √ <input type="text" class="s" id="'+id+'_b"></div><button style="margin:0" onclick="checkPair(\''+id+'\','+it.a[0]+','+it.a[1]+')">Проверить</button>';
+      }else if(it.k==='num'){
+        h+=' <input type="text" class="s" id="'+id+'_in"></div><button style="margin:0" onclick="checkNum(\''+id+'\','+it.a+')">Проверить</button>';
+      }else{
+        h+='</div><div class="opts">'+it.o.map((o,oi)=>'<label><input type="radio" name="'+id+'" value="'+oi+'"> '+o+'</label>').join('')+'</div><button style="margin:0" onclick="checkChoice(\''+id+'\',\''+it.c+'\')">Проверить</button>';
+      }
+      h+='<div class="result" id="'+id+'_res"></div></div>';
+    });
+  });
+  document.getElementById('t2box').innerHTML=h;
+})();
+</script>
+</body>
+</html>
